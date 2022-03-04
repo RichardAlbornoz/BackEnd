@@ -1,38 +1,45 @@
-//-IMPORTS
-if (process.env.NODE_ENV !== 'production')
-{require('dotenv').config()}
-const express = require('express');
-//const mongoose = require('mongoose');
-const cors = require('cors');
-//const multer = require('multer');
-const morgan = require('morgan');
-const path = require('path');
+const express = require("express");
 const fs = require('fs');
-const Container = require('./class.js');
-
-//-MODELS
-//const Products = require('./models/products');
-//-INITIALIZATION
-
 const app = express();
-//require('./database')
+const archivoLocal = `../Clase4/productos.txt`
 
-//-STATIC
-app.use(express.static(path.join(__dirname, 'public')));
-//-MIDDLEWARES
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-app.use(cors());
-app.use(morgan('dev'));
-//-ROUTES
- const Route = new Container;
-/*-Lista de productos-*/
- app.use('/productos', Route.getAll);
-/*----Productos Random----*/
- app.use('/productoRandom', Route.randomProduct)
-/*----Testing Route----*/
- app.get('/test', Route.getAll);
-//-SERVER-UP
+const PORT = 8080;
 
- app.set('port', process.env.PORT || 3000);
- app.listen(app.get('port'), () => {console.log('Server is running on port', app.get('port')); });
+let Contendor = require('../Clase4/desafio') 
+let nuevoContenedor = new Contendor(archivoLocal)
+
+app.get("/", (req, res) => {
+    let titulo = `<h1 style="color:blue; background-color:white; text-align:center">Entrega de Desafio</h1><hr><a href="/productos"><button>IR A PRODUCTOS</button></a><hr><a href="/productoRandom"><button>IR A PRODUCTOS ALEATORIOS</button></a><hr><p>Se crean los botones para acceso más facil!</p>`
+    res.send(titulo); // Pido que muestre en navegador el valor TITULO
+})
+
+app.get("/productos", (req, res) => {
+    (async () => {
+        contenido = await nuevoContenedor.getAll();
+        let productos = [];
+        contenido.forEach(element => {
+            productos.push(element.title);
+        });
+        res.send({
+            items: productos
+        })
+    })();
+})
+
+app.get("/productoRandom", (req, res) => {
+    let randomNumber = Math.ceil(Math.random() * (5)) - 1;
+    (async () => {
+        contenido = await nuevoContenedor.getAll();
+        let productos = [];
+        contenido.forEach(element => {
+            productos.push(element.title);
+        });
+        res.send({
+            items: productos[randomNumber]
+        })
+    })();
+})
+
+const server = app.listen(PORT, () => {
+    console.log(`Server on http://localhost:${PORT}`);
+})
