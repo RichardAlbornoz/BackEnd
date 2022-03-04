@@ -1,11 +1,11 @@
 const express = require("express");
 const fs = require('fs');
 const app = express();
-const archivoLocal = `../Clase4/productos.txt`
+const archivoLocal = `../Desafio2/productos.txt`
 
 const PORT = 8080;
 
-let Contendor = require('../Clase4/desafio') 
+let Contendor = require('../Desafio2/index') 
 let nuevoContenedor = new Contendor(archivoLocal)
 
 app.get("/", (req, res) => {
