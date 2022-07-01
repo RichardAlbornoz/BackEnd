@@ -10,7 +10,7 @@ let nuevoContenedor = new Contendor(archivoLocal)
 
 app.get("/", (req, res) => {
     let titulo = `<h1 style="color:blue; background-color:white; text-align:center">Entrega de Desafio</h1><hr><a href="/productos"><button>IR A PRODUCTOS</button></a><hr><a href="/productoRandom"><button>IR A PRODUCTOS ALEATORIOS</button></a><hr><p>Se crean los botones para acceso más facil!</p>`
-    res.send(titulo); // Pido que muestre en navegador el valor TITULO
+    res.send(titulo); 
 })
 
 app.get("/productos", (req, res) => {
